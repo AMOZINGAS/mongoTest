@@ -11,18 +11,28 @@ public class Person {
     private ObjectId id;
     private String name;
     private int age;
+    private String mail;
 
     public Person() {}
     
     
     
-    public Person(String name, int age){
+    public Person(String name, int age, String mail){
         
         this.age = age;
         this.name = name;
+        this.mail = mail;
         
     }
 
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+    
     public ObjectId getId() {
         return id;
     }

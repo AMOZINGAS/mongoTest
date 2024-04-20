@@ -10,11 +10,14 @@ import com.mongodb.client.MongoCursor;
 import com.mongodb.Block;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
+import static com.mongodb.client.model.Filters.gt;
 import com.mongodb.client.model.Sorts;
+import static com.mongodb.client.model.Sorts.ascending;
 import com.mongodb.client.model.Updates;
 import com.mongodb.client.result.UpdateResult;
 import java.util.LinkedList;
 import java.util.List;
+import javax.swing.JOptionPane;
 import org.bson.Document;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
@@ -77,6 +80,101 @@ public class PersonDAO {
             System.out.println(person.getId());
             System.out.println(person.getName());
             System.out.println(person.getAge());
+            
+        }
+        
+    }
+    
+    public void readOrderByAgeName(){
+        
+        List<Person> listOrderBy = new LinkedList<>();
+        
+        collection.find().sort(ascending("age", "name")).into(listOrderBy);
+        for(Person person: listOrderBy){
+            
+            System.out.println("Age: " + person.getAge()+ "\nName: " + person.getName());
+            
+        }
+        
+    }
+    
+    public Person upDateDocument(Person person){
+        
+        Document filter = new Document("_id", person.getId());
+        System.out.println(person.toString());
+        Document upDate = new Document();
+        
+        upDate.append("$set", new Document("age", 18).append("name", "Modificado"));
+        person.setAge(18);
+        person.setName("Modificado");
+        
+        collection.updateOne(filter, upDate);
+        
+        return person;
+        
+    }
+    
+    public String deletePerson(Person person){
+        
+        Document filter = new Document("_id", person.getId());
+        
+        collection.deleteOne(filter);
+        
+        JOptionPane.showMessageDialog(null, "La persona eliminada es: " + person.getName(), "EXITO!!", JOptionPane.INFORMATION_MESSAGE);
+        return person.getName();
+        
+    }
+    
+    public Person findUniquePerson(String name){
+        
+        Document filtro = new Document("name", name);
+        Person person = collection.find(filtro).first();
+        if(person != null){
+            
+            return person;
+            
+        }else{
+            
+            return null;
+            
+        }
+        
+    }
+    
+    public String createDocument(Person person){
+//        
+//        Document document = new Document();
+//        document.append("name", "Jullian");
+//        document.append("age", 23);
+//        document.append("mail", "jullianherlenn@gmail.com");
+        
+        person.setAge(person.getAge());
+        person.setName(person.getName());
+        person.setMail(person.getMail());
+        
+        collection.insertOne(person);
+        
+        List<Person> listPerson = new LinkedList<>();
+        collection.find().into(listPerson);
+        for(Person persons: listPerson){
+            
+            System.out.println("Age: " + persons.getAge()+ "\nName: " + persons.getName());
+        
+        }
+        return person.getName();
+        
+        
+    }
+    
+    public void readGreaterThan(){
+        
+        List<Person> listGreaterThan = new LinkedList<>();
+        
+        collection.find(gt("age", 18)).into(listGreaterThan);
+        
+        for(Person person: listGreaterThan){
+            
+            System.out.println("Age: " + person.getAge()+ "\nName: " + person.getName());
             
         }
         
