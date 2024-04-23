@@ -37,6 +37,7 @@ public class JFrameCreate extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         txtMail = new javax.swing.JTextField();
+        btnReturn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -52,6 +53,13 @@ public class JFrameCreate extends javax.swing.JFrame {
         jLabel2.setText("Age");
 
         jLabel3.setText("Mail");
+
+        btnReturn.setText("Return");
+        btnReturn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReturnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -71,9 +79,11 @@ public class JFrameCreate extends javax.swing.JFrame {
                             .addComponent(txtAge)
                             .addComponent(txtMail, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(159, 159, 159)
+                        .addGap(73, 73, 73)
+                        .addComponent(btnReturn)
+                        .addGap(68, 68, 68)
                         .addComponent(btnConfirm)))
-                .addContainerGap(162, Short.MAX_VALUE))
+                .addContainerGap(113, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -90,9 +100,11 @@ public class JFrameCreate extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtMail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
-                .addComponent(btnConfirm)
-                .addGap(46, 46, 46))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnReturn)
+                    .addComponent(btnConfirm))
+                .addGap(32, 32, 32))
         );
 
         pack();
@@ -110,6 +122,15 @@ public class JFrameCreate extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, "Se agregó correctamente a: " + person.getName(), "EXITO!!", JOptionPane.INFORMATION_MESSAGE);
         
     }//GEN-LAST:event_btnConfirmActionPerformed
+
+    private void btnReturnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReturnActionPerformed
+        // TODO add your handling code here:
+        
+        JFrameMain main = new JFrameMain();
+        main.setVisible(true);
+        this.dispose();
+        
+    }//GEN-LAST:event_btnReturnActionPerformed
 
 //    /**
 //     * @param args the command line arguments
@@ -149,6 +170,7 @@ public class JFrameCreate extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnConfirm;
+    private javax.swing.JButton btnReturn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

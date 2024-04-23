@@ -44,7 +44,7 @@ public class PersonDAO {
         //Aqui usamos el MongoClient para poder crear las conexiones en la base de datos de mongo
         MongoClient dbServer = MongoClients.create(clientsSettings);
         //Inicializamos a la base de datos con el dbserver que es la conexion a mongo y ahora a la base de nosotros
-        this.dataBase = dbServer.getDatabase("AmosHeli");
+        this.dataBase = dbServer.getDatabase("Example");
         //Mas abajo podemos crear la conexion de una vez si vamos a utilizar los
         //POJOs como conexion de collections
         this.collection = dataBase.getCollection("person", Person.class);

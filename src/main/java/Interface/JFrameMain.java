@@ -4,19 +4,16 @@
  */
 package Interface;
 
-import DAO.PersonDAO;
-import colecciones.Person;
-
 /**
  *
- * @author PC
+ * @author lv1821
  */
-public class JFrameDelete extends javax.swing.JFrame {
+public class JFrameMain extends javax.swing.JFrame {
 
     /**
-     * Creates new form JFrameDelete
+     * Creates new form JFrameMain
      */
-    public JFrameDelete() {
+    public JFrameMain() {
         initComponents();
     }
 
@@ -29,14 +26,18 @@ public class JFrameDelete extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        txtName = new javax.swing.JTextField();
+        btnCreate = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
-        btnReturn = new javax.swing.JButton();
+        btnUpDate = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("Name: ");
+        btnCreate.setText("Create");
+        btnCreate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCreateActionPerformed(evt);
+            }
+        });
 
         btnDelete.setText("Delete");
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
@@ -45,10 +46,10 @@ public class JFrameDelete extends javax.swing.JFrame {
             }
         });
 
-        btnReturn.setText("Return");
-        btnReturn.addActionListener(new java.awt.event.ActionListener() {
+        btnUpDate.setText("UpDate");
+        btnUpDate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnReturnActionPerformed(evt);
+                btnUpDateActionPerformed(evt);
             }
         });
 
@@ -57,52 +58,54 @@ public class JFrameDelete extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(89, 89, 89)
-                .addComponent(jLabel1)
-                .addGap(18, 18, 18)
-                .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(138, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(72, 72, 72)
-                .addComponent(btnReturn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnDelete)
-                .addGap(97, 97, 97))
+                .addGap(152, 152, 152)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnUpDate)
+                    .addComponent(btnDelete)
+                    .addComponent(btnCreate))
+                .addContainerGap(176, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(107, 107, 107)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 106, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnDelete)
-                    .addComponent(btnReturn))
-                .addGap(42, 42, 42))
+                .addGap(46, 46, 46)
+                .addComponent(btnCreate)
+                .addGap(53, 53, 53)
+                .addComponent(btnDelete)
+                .addGap(62, 62, 62)
+                .addComponent(btnUpDate)
+                .addContainerGap(70, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateActionPerformed
+        // TODO add your handling code here:
+        
+        JFrameCreate create = new JFrameCreate();
+        create.setVisible(true);
+        this.dispose();
+        
+    }//GEN-LAST:event_btnCreateActionPerformed
+
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here:
         
-        PersonDAO personDAO = new PersonDAO();
-        Person person = personDAO.findUniquePerson(txtName.getText());
-        personDAO.deletePerson(person);
+        JFrameDelete delete = new JFrameDelete();
+        delete.setVisible(true);
+        this.dispose();
         
     }//GEN-LAST:event_btnDeleteActionPerformed
 
-    private void btnReturnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReturnActionPerformed
+    private void btnUpDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpDateActionPerformed
         // TODO add your handling code here:
         
-        JFrameMain main = new JFrameMain();
-        main.setVisible(true);
+        JFrameUpDate upDate = new JFrameUpDate();
+        upDate.setVisible(true);
         this.dispose();
         
-    }//GEN-LAST:event_btnReturnActionPerformed
+    }//GEN-LAST:event_btnUpDateActionPerformed
 
 //    /**
 //     * @param args the command line arguments
@@ -121,28 +124,27 @@ public class JFrameDelete extends javax.swing.JFrame {
 //                }
 //            }
 //        } catch (ClassNotFoundException ex) {
-//            java.util.logging.Logger.getLogger(JFrameDelete.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//            java.util.logging.Logger.getLogger(JFrameMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 //        } catch (InstantiationException ex) {
-//            java.util.logging.Logger.getLogger(JFrameDelete.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//            java.util.logging.Logger.getLogger(JFrameMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 //        } catch (IllegalAccessException ex) {
-//            java.util.logging.Logger.getLogger(JFrameDelete.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//            java.util.logging.Logger.getLogger(JFrameMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 //        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-//            java.util.logging.Logger.getLogger(JFrameDelete.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//            java.util.logging.Logger.getLogger(JFrameMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 //        }
 //        //</editor-fold>
 //
 //        /* Create and display the form */
 //        java.awt.EventQueue.invokeLater(new Runnable() {
 //            public void run() {
-//                new JFrameDelete().setVisible(true);
+//                new JFrameMain().setVisible(true);
 //            }
 //        });
 //    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCreate;
     private javax.swing.JButton btnDelete;
-    private javax.swing.JButton btnReturn;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JTextField txtName;
+    private javax.swing.JButton btnUpDate;
     // End of variables declaration//GEN-END:variables
 }

@@ -3,6 +3,7 @@ package com.mycompany.mongotest;
 import DAO.PersonDAO;
 import Interface.JFrameCreate;
 import Interface.JFrameDelete;
+import Interface.JFrameMain;
 import Interface.JFrameUpDate;
 
 /**
@@ -13,8 +14,8 @@ public class MongoTest {
 
     public static void main(String[] args) {
         
-        JFrameDelete delete = new JFrameDelete();
-        delete.setVisible(true);
+        JFrameMain main = new JFrameMain();
+        main.setVisible(true);
         
 //        PersonDAO person = new PersonDAO();
 //        
