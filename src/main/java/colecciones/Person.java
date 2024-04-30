@@ -1,5 +1,6 @@
 package colecciones;
 
+import java.util.List;
 import org.bson.types.ObjectId;
 
 /**
@@ -12,6 +13,7 @@ public class Person {
     private String name;
     private int age;
     private String mail;
+    private List<Comment> comments;
 
     public Person() {}
     
@@ -25,6 +27,18 @@ public class Person {
         
     }
 
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+    
+    public void addComment(Comment comment){
+        this.comments.add(comment);
+    }
+    
     public String getMail() {
         return mail;
     }

@@ -1,5 +1,6 @@
 package DAO;
 
+import colecciones.Comment;
 import colecciones.Person;
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
@@ -15,6 +16,8 @@ import com.mongodb.client.model.Sorts;
 import static com.mongodb.client.model.Sorts.ascending;
 import com.mongodb.client.model.Updates;
 import com.mongodb.client.result.UpdateResult;
+import conexion.DBConnection;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -30,27 +33,31 @@ import org.bson.types.ObjectId;
  *
  * @author Amós Helí Olguín Quiróz
  */
-public class PersonDAO {
+public class PersonDAO implements IPersonDAO{
 
     private final MongoDatabase dataBase;
     private final MongoCollection<Person> collection;
     
     public PersonDAO() {
-    
-        CodecRegistry pojoCodecRegistry = fromProviders(PojoCodecProvider.builder().automatic(true).build());
-        CodecRegistry codecRegistry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(), pojoCodecRegistry);
-        ConnectionString stringConnection = new ConnectionString("mongodb://localhost/27017");
-        MongoClientSettings clientsSettings = MongoClientSettings.builder().applyConnectionString(stringConnection).codecRegistry(codecRegistry).build();
-        //Aqui usamos el MongoClient para poder crear las conexiones en la base de datos de mongo
-        MongoClient dbServer = MongoClients.create(clientsSettings);
-        //Inicializamos a la base de datos con el dbserver que es la conexion a mongo y ahora a la base de nosotros
-        this.dataBase = dbServer.getDatabase("Example");
-        //Mas abajo podemos crear la conexion de una vez si vamos a utilizar los
-        //POJOs como conexion de collections
-        this.collection = dataBase.getCollection("person", Person.class);
+        
+        dataBase = DBConnection.getDataBase();
+        collection = dataBase.getCollection("person", Person.class);
+        
+//        CodecRegistry pojoCodecRegistry = fromProviders(PojoCodecProvider.builder().automatic(true).build());
+//        CodecRegistry codecRegistry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(), pojoCodecRegistry);
+//        ConnectionString stringConnection = new ConnectionString("mongodb://localhost/27017");
+//        MongoClientSettings clientsSettings = MongoClientSettings.builder().applyConnectionString(stringConnection).codecRegistry(codecRegistry).build();
+//        //Aqui usamos el MongoClient para poder crear las conexiones en la base de datos de mongo
+//        MongoClient dbServer = MongoClients.create(clientsSettings);
+//        //Inicializamos a la base de datos con el dbserver que es la conexion a mongo y ahora a la base de nosotros
+//        this.dataBase = dbServer.getDatabase("Example");
+//        //Mas abajo podemos crear la conexion de una vez si vamos a utilizar los
+//        //POJOs como conexion de collections
+//        this.collection = dataBase.getCollection("person", Person.class);
         
     }
     
+    @Override
     public void readPersonCollection(){
         
         //Podemos crear nuestra propia conexion con el documento con un 
@@ -69,7 +76,8 @@ public class PersonDAO {
         
     }
     
-    public void readPersonPOJO(){
+    @Override
+    public List<Person> readPersonPOJO(){
         
         List<Person> listPerson = new LinkedList<>();
         
@@ -83,8 +91,11 @@ public class PersonDAO {
             
         }
         
+        return listPerson;
+        
     }
     
+    @Override
     public void readOrderByAgeName(){
         
         List<Person> listOrderBy = new LinkedList<>();
@@ -98,6 +109,7 @@ public class PersonDAO {
         
     }
     
+    @Override
     public Person upDateDocument(Person person){
         
         Document filter = new Document("_id", person.getId());
@@ -114,6 +126,7 @@ public class PersonDAO {
         
     }
     
+    @Override
     public String deletePerson(Person person){
         
         Document filter = new Document("_id", person.getId());
@@ -124,7 +137,8 @@ public class PersonDAO {
         return person.getName();
         
     }
-    
+
+    @Override
     public Person findUniquePerson(String name){
         
         Document filtro = new Document("name", name);
@@ -141,31 +155,16 @@ public class PersonDAO {
         
     }
     
-    public String createDocument(Person person){
-//        
-//        Document document = new Document();
-//        document.append("name", "Jullian");
-//        document.append("age", 23);
-//        document.append("mail", "jullianherlenn@gmail.com");
-        
-        person.setAge(person.getAge());
-        person.setName(person.getName());
-        person.setMail(person.getMail());
+    @Override
+    public Person createDocument(Person person){
         
         collection.insertOne(person);
-        
-        List<Person> listPerson = new LinkedList<>();
-        collection.find().into(listPerson);
-        for(Person persons: listPerson){
-            
-            System.out.println("Age: " + persons.getAge()+ "\nName: " + persons.getName());
-        
-        }
-        return person.getName();
+        return person;
         
         
     }
     
+    @Override
     public void readGreaterThan(){
         
         List<Person> listGreaterThan = new LinkedList<>();
@@ -180,6 +179,7 @@ public class PersonDAO {
         
     }
     
+    @Override
     public void readOnlyName(){
         
         List<Person> listPersonOnlyName = new LinkedList<>();
@@ -197,5 +197,51 @@ public class PersonDAO {
         }
         
     }
+
+    @Override
+    public void aggregate() {
+    
+        MongoCollection<Person> collectionDocument = dataBase.getCollection("person", Person.class);
+
+        // Definir la operación de agregación con $lookup
+        Document lookupStage = new Document("$lookup",
+                new Document("from", "comments")
+                        .append("localField", "comments")
+                        .append("foreignField", "_id")
+                        .append("as", "comments"));
+
+        // Ejecutar la agregación
+        Iterable<Person> results = collectionDocument.aggregate(Arrays.asList(lookupStage));
+        for(Person person: results){
+            
+            System.out.println("Name: " + person.getName());
+            System.out.println("Age: " + person.getAge());
+            System.out.println("Mail: " + person.getMail());
+            int count = 0;
+            for(Comment comment: person.getComments()){
+                count ++;
+                System.out.println("Comment " + count + ": " + comment.getComment());
+                
+            }
+            
+        }
+        
+    }
+
+    @Override
+    public void readGroupByAge(){
+    
+        MongoCollection<Document> collectionPro = dataBase.getCollection("person");
+        Document matchStage = new Document("$match", new Document("age", new Document("$gt", 20)));
+        Document groupStage = new Document("$group", new Document("_id", null).append("total", new Document("$sum", 1)));
+        Document result = collectionPro.aggregate(Arrays.asList(matchStage, groupStage)).first();
+        
+        int total = result.getInteger("total", 0);
+        
+        System.out.println(total);
+        
+    }
+    
+    
     
 }
